@@ -1,9 +1,4 @@
-let palabras = [];
-let palabra;
-
-while ((palabra = prompt('Introduzca una palabra')) !== null && palabra !== '') {
-    palabras.push(palabra);
-}
+let palabras = guardarPalabrasPrompt();
 
 let palabrasUnicas = [...new Set(palabras)];
 palabrasUnicas.sort((a, b) => b.localeCompare(a));

@@ -1,12 +1,18 @@
-let palabras = [];
-let palabra;
+let palabras = guardarPalabrasPrompt();
+let palabrasUnicas = [...new Set(palabras)];
 
-while ((palabra = prompt('Introduzca una palabra')) !== null && palabra !== '') {
-    palabras.push(palabra);
+palabrasUnicas.sort((a, b) => b.localeCompare(a));
+
+function crearMap(array) {
+    array.forEach(palabra => {
+        
+    });
+
+    return mapa = new Map(array);
 }
 
-let palabrasUnicas = [...new Set(palabras)];
-palabrasUnicas.sort((a, b) => b.localeCompare(a));
+let mapaPalabras
+
 
 let zonaPalabras = document.getElementById('palabras');
 zonaPalabras.innerHTML = palabrasUnicas.join("<br>");
