@@ -2,9 +2,9 @@ let palabras = guardarPalabrasPrompt();
 
 palabras.sort((a, b) => b.localeCompare(a));
 
-let mapaPalabras = new Map();
-
  function crearMap(array) {
+    let mapaPalabras = new Map();
+
     array.forEach(palabra => {
         let cont = 0;
         let palabra1 = palabra;
@@ -21,10 +21,11 @@ let mapaPalabras = new Map();
     return mapaPalabras;
 } 
 
-mapaPalabras = crearMap(palabras);
-
-console.log(mapaPalabras);
-
+let mapaPalabras = crearMap(palabras);
 
 let zonaPalabras = document.getElementById('palabras');
-zonaPalabras.innerHTML = palabrasUnicas.join("<br>");
+
+mapaPalabras.forEach((valor, clave) => {
+    zonaPalabras.innerHTML += `${clave} ${valor} <br>`;
+});
+
