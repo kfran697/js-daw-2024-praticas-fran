@@ -23,7 +23,7 @@ function clearFields() {
 }
 
 function procesarFetch(numsecs, user) {
-    fetch(BASE_URL + user) 
+    fetch(BASE_URL + user + `?delay=${numsecs}`) 
         .then((response) => {
             let state = response.status;
             if (response.ok) {
@@ -32,23 +32,46 @@ function procesarFetch(numsecs, user) {
                         return {data, state};
                     });
             } else {
-                throw new Error(state);
+                return Promise.reject(state);
             }
         })
         .then(({data, state}) => {
-            let userData = data.data;
-
-            setTimeout(() => {
+            return new Promise((resolve, reject) => {
+                let userData = data.data;
                 document.getElementById('id').innerHTML = userData.id;
                 document.getElementById('email').innerHTML = userData.email;
-                document.getElementById('name').innerHTML = userData.first_name;
                 document.getElementById('status').innerHTML = state;
-            }, numsecs * 1000);
+    
+                resolve(userData);
+            });
+        })
+        .then((userData) => {
+            procesarFetchPost(userData);
+        })
+}
+
+// Funcion para procesar el post
+function procesarFetchPost (userData) {
+    fetch (POSTMAN_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData)
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject(response.status);
+            }
+        })
+        .then((data) => {
+            let userData = data.json;
+            document.getElementById('name').innerHTML = userData.first_name;
         })
         .catch((error) => {
-            setTimeout(() => {
-                error = String(error).slice(-3);
-                document.getElementById('status').innerHTML = error;
-            }, numsecs * 1000);
-        });
+            error = String(error).slice(-3);
+            document.getElementById('status').innerHTML = error;
+    });
 }
